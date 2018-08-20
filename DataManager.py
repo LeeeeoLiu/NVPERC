@@ -191,8 +191,6 @@ class DataManager(object):
         current_sentence.trigger_index = idx
         return avec
 
-    
-
     def get_opennmt_tensor(self):
         if not os.path.exists('./datas/data_4_OpenNMT/sen_be') or self.overwrite:
             print 'writing files to ./datas/data_4_OpenNMT'
@@ -298,39 +296,39 @@ class DataManager(object):
                 ba_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.words_before_antecedent)).float()
                 ant_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.antecedent)).float()
                 aa_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.words_after_antecedent)).float()
-                sentence.input_vec_sum = torch.cat((ant_sum_vec,ba_sum_vec,aa_sum_vec ,trigger_vec_tensor))
+                sentence.input_vec_sum = torch.cat((ant_sum_vec,ba_sum_vec,aa_sum_vec ,trigger_vec_tensor)).numpy().tolist()
 
                 # self.input_vec_sum_feature = None
                 sentence.input_vec_sum_feature = torch.cat(
-                    (ant_sum_vec, ba_sum_vec, aa_sum_vec, trigger_vec_tensor, torch.from_numpy(np.array(fvec)).float()))
+                    (ant_sum_vec, ba_sum_vec, aa_sum_vec, trigger_vec_tensor, torch.from_numpy(np.array(fvec)).float())).numpy().tolist()
 
                 # self.input_vec_hidden = None
                 tri_vec = trigger_vec
                 tri = torch.from_numpy(np.array(tri_vec)).float()
                 _input_vector = torch.cat((sentence.antecedent_hidden_tensor.float(), sentence.before_antecedent_hidden_tensor.float()))
                 _input_vector2 = torch.cat((sentence.after_antecedent_hidden_tensor.float(), tri))
-                sentence.input_vec_hidden = torch.cat((_input_vector, _input_vector2))
+                sentence.input_vec_hidden = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
 
                 # self.input_vec_hidden_feature = None
                 tri_vec = trigger_vec + fvec
                 tri = torch.from_numpy(np.array(tri_vec)).float()
                 # _input_vector = torch.cat((sentence.antecedent_hidden_tensor.float(), sentence.before_antecedent_hidden_tensor.float()), 1)
                 _input_vector2 = torch.cat((sentence.after_antecedent_hidden_tensor.float(), tri))
-                sentence.input_vec_hidden_feature = torch.cat((_input_vector, _input_vector2))
+                sentence.input_vec_hidden_feature = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
 
                 # self.input_vec_attention = None
                 tri_vec = trigger_vec
                 tri = torch.from_numpy(np.array(tri_vec)).float()
                 _input_vector = torch.cat((sentence.antecedent_attention_tensor.float(), sentence.before_antecedent_attention_tensor.float()))
                 _input_vector2 = torch.cat((sentence.after_antecedent_attention_tensor.float(), tri))
-                sentence.input_vec_attention = torch.cat((_input_vector, _input_vector2))
+                sentence.input_vec_attention = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
                 
                 # self.input_vec_attention_feature = None
                 tri_vec = trigger_vec + fvec
                 tri = torch.from_numpy(np.array(tri_vec)).float()
                 # _input_vector = torch.cat((sentence.antecedent_attention_tensor.float(), sentence.before_antecedent_attention_tensor.float()), 1)
                 _input_vector2 = torch.cat((sentence.after_antecedent_attention_tensor.float(), tri))
-                sentence.input_vec_attention_feature = torch.cat((_input_vector, _input_vector2))
+                sentence.input_vec_attention_feature = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
                 # GRU hidden, Tensor, Size: sentences_length X 6000
                 sentence.before_antecedent_hidden_tensor = None
                 sentence.antecedent_hidden_tensor = None

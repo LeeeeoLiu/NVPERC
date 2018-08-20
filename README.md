@@ -6,14 +6,17 @@ Table of Contents
 =================
 
    * [End-to-end Neural Verb Phrase Ellipsis Resolution](#end-to-end-neural-verb-phrase-ellipsis-resolution)
-         * [Requirements](#requirements)
-		          * [Python Package](#python-package)
-				           * [Pretrained FastText Model](#pretrained-fasttext-model)
-						            * [Pretrained OpenNMT Model](#pretrained-opennmt-model)
-									      * [Data Manager](#data-manager)
-										        * [Sentence](#sentence)
-												      * [Trigger Detection Results](#trigger-detection-results)
-													        * [Antecedent Indentification Results](#antecedent-indentification-results)
+   * [Table of Contents](#table-of-contents)
+      * [Requirements](#requirements)
+         * [Python Package](#python-package)
+         * [Pretrained FastText Model](#pretrained-fasttext-model)
+         * [Pretrained OpenNMT Model](#pretrained-opennmt-model)
+      * [Data Manager](#data-manager)
+         * [Step 1 Pretrain Data Manager](#step-1-pretrain-data-manager)
+         * [Step 2 Use Pretrained Data](#step-2-use-pretrained-data)
+      * [Sentence](#sentence)
+      * [Trigger Detection Results](#trigger-detection-results)
+      * [Antecedent Indentification Results](#antecedent-indentification-results)
 
 ## Requirements
 
@@ -21,16 +24,6 @@ Table of Contents
 
 ```bash
 pip install -r requirements.txt
-```
-requirements.txt
-```bash
-fasttext=0.8.3
-numpy=1.14.3
-nltk=3.2.5
-Pattern=2.6
-scikit-learn=0.19.1
-scipy=0.19.0
-torch=0.4.0
 ```
 
 ### Pretrained FastText Model
@@ -49,156 +42,100 @@ Then put `fasttext_model_4_all_wsj.bin` into the `datas/` , put `encoder_model.p
 
 Data Manager provided a easy way to get the infomation of every sentence. The usages are showed in the following example code.
 
+### Step 1 Pretrain Data Manager
+Run the following code to pretrain the Data Manager. If you want to re-train Data Manager,  just add the parameter `-overwrite True`.
+
+```bash
+python prepare.py
+```
+
+### Step 2 Use Pretrained Data
+
+For Trigger Detection,  you can get the datas by the following way:
 ```python
 # coding=utf-8
 
-import argparse
-from DataManager import DataManager
+if __name__ == '__main__':
+	ROOT_DATA_PATH = './datas/data_manager/'
+    with open('{}self_trigger_generate_sentences.pkl'.format(ROOT_DATA_PATH),'r') as f:
+        # get all the sentences for trigger detection
+        _sentences = pickle.load(f)
+    
+    for _sent in _sentences:
+    	# input vector, List, Size:19
+    	_sent.sen_vec
+    	# input vector with feature, List, Size:33
+    	_sent.sen_vec_feature
+    	# tag(1 for positive case, and 0 for negative case), Int, Size: 1
+    	_sent.trigger_label
+        # trigger word for the error analysis, Str
+        _sent.trigger
+        # trigger word auxiliary type for the experiment, Str
+        _sent.aux_type
+        # the original sentence for the error analysis, Str
+        _sent.sen
+```
+
+For Antecedent Identification,  you can get the datas by the following way:
+```python
+# coding=utf-8
 
 if __name__ == '__main__':
-	    parser = argparse.ArgumentParser(description="Parameters description")
-		    parser.add_argument('-train_test', type=bool, default=False,
-			                        help="Type:bool. Whether use train-test proposed by Bos \nDefalut:False")
-			    parser.add_argument('-feature', type=bool, default=False,
-				                        help="Type:bool. Whether add feature to the SVM Classification. \nDefalut:False")
-				    parser.add_argument('-overwrite', type=bool, default=False,
-					                        help="Type:bool. Whether restart processing all the data. \nDefalut:False")
-					    args = parser.parse_args()
-						    # vars make args to dict, for example: {'train_test':False, 'feature':False, 'overwrite':False}
-							    dm = DataManager(vars(args))
-								    dm.init()
-									    
-										    # get all the sentences for trigger detection
-											    _sentences = dm.trigger_generate_sentences    # list
-												    
-													    for _sent in _sentences:
-															        # input vector, List, Size:19
-																	        _sent.sen_vec
-																			        # input vector with feature, List, Size:33
-																					        _sent.sen_vec_feature
-																							        # tag(1 for positive case, and 0 for negative case), Int, Size: 1
-																									        _sent.trigger_label
-																											    
-																												    # get all the sentences for antecedent identification
-																													    _sentences =  dm.antecedent_generate_sentences    # list
-																														    
-																															    for _sent in _sentences:
-																																	        # sum pooling, FloatTensor, Size: 400
-																																			        _sent.input_vec_sum
-																																					        # sum pooling with feature, FloatTensor, Size: 468
-																																							        _sent.input_vec_sum_feature
-																																									        # GRU, FloatTensor, Size: 6100
-																																											        _sent.input_vec_hidden
-																																													        # GRU with feature, FloatTensor, Size: 6168
-																																															        _sent.input_vec_hidden_feature
-																																																	        # AttentionGRU, FloatTensor, Size: 1600
-																																																			        _sent.input_vec_attention
-																																																					        # AttentionGRU with feature, FloatTensor, Size: 1668
-																																																							        _sent.input_vec_attention_feature
-																																																									        # tag(1 for positive case, and 0 for negative case), Int, Size: 1
-																																																											        _sent.antecedent_label
-																																																													```
+	ROOT_DATA_PATH = './datas/data_manager/'
+    with open('{}self_antecedent_generate_sentences.pkl'.format(ROOT_DATA_PATH),'r') as f:
+        # get all the sentences for antecedent identification
+        _sentences = pickle.load(f)
+    
+    for _sent in _sentences:
+    	# sum pooling, FloatTensor, Size: 400
+        _sent.input_vec_sum
+        # sum pooling with feature, FloatTensor, Size: 468
+        _sent.input_vec_sum_feature
+        # GRU, FloatTensor, Size: 6100
+        _sent.input_vec_hidden
+        # GRU with feature, FloatTensor, Size: 6168
+        _sent.input_vec_hidden_feature
+        # AttentionGRU, FloatTensor, Size: 1600
+        _sent.input_vec_attention
+        # AttentionGRU with feature, FloatTensor, Size: 1668
+        _sent.input_vec_attention_feature
+        # tag(1 for positive case, and 0 for negative case), Int, Size: 1
+        _sent.antecedent_label
+    	# tag(1 for positive case, and 0 for negative case), Int, Size: 1
+    	_sent.trigger_label
+        # trigger word for the error analysis, Str
+        _sent.trigger
+        # trigger word auxiliary type for the experiment, Str
+        _sent.aux_type
+        # the original sentence for the error analysis, Str
+        _sent.sen
+```
 
 ## Sentence
 
 Besides, you can get more info in a sentence object. The defination of the Sentence Class is as follows.
-```python
-class Sentence(object):
-    """ A Sentence Data Class. """
-	    def __init__(self, sen_tagged, wsj_section):
-		        """ basic info """
-				        # sen_tagged with BIOEST, for example: Not/RB/O only/RB/O ... .
-						        self.sen_tagged = sen_tagged
-								        # the wsj section the sentence come from, for example: wsj.section00.
-										        self.wsj_section = wsj_section
-												        # the sentence, for example: Not only ... .
-														        self.sen = None 
-																        # show whether the sentence is gold or generated
-																		        self.is_generated = False
-																				        # a list of words in the sentence, for example: ['Not', 'only', ...].
-																						        self.words_list = []
-																								        # a list of POS index(refer to POS_2_INDEX below) of the words in the sentence, for example: [19, 19, ...].
-																										        self.pos_list = []
-																												        # a list of tag index(refer to TAG_2_INDEX below) of the words in the sentence, for example: [2, 2, ...].
-																														        self.tag_list = []
 
-																																        """ for trigger training """
-																																		        # the trigger word in the sentence, for example: is.
-																																				        self.sen_trigger_word = None
-																																						        # the auxiliay type of the trigger, for example: be.
-																																								        self.sen_trigger_aux_type = None
-																																										        # the training input vector
-																																												        self.sen_vec = None
-																																														        # the training input vector with feature
-																																																        self.sen_vec_feature = None
-																																																		        # tag (1 for positive case, 0 for negative case), for example: 1
-																																																				        self.trigger_label = None
-
-																																																						        """ for antecedent training """
-																																																								        # the berkely parse result of the sentence
-																																																										        self.sen_parse = None
-																																																												        # the trigger index in the words list
-																																																														        self.trigger_index = None
-																																																																        # list which marked the gold antecedent with 1, otherwise 0
-																																																																		        self.truth_label = None
-																																																																				        # words before antecedent
-																																																																						        self.words_before_antecedent = None
-																																																																								        # antecedent words
-																																																																										        self.antecedent = None
-																																																																												        # words after antecedent
-																																																																														        self.words_after_antecedent = None
-																																																																																        # list which marked the words with 0(other), 1(antecedent) and 2(trigger) 
-																																																																																		        self.sen_tag_label = None
-																																																																																				        
-																																																																																						        # hidden
-																																																																																								        # GRU hidden, Tensor, Size: sentences_length X 6000
-																																																																																										        self.before_antecedent_hidden_tensor = None
-																																																																																												        self.antecedent_hidden_tensor = None
-																																																																																														        self.after_antecedent_hidden_tensor = None
-
-																																																																																																        # attention
-																																																																																																		        # GRU hidden, Tensor, Size: sentences_length X 1500
-																																																																																																				        self.before_antecedent_attention_tensor = None
-																																																																																																						        self.antecedent_attention_tensor = None
-																																																																																																								        self.after_antecedent_attention_tensor = None
-
-																																																																																																										        # input vec 
-																																																																																																												        # sum pooling, FloatTensor, Size: 400
-																																																																																																														        self.input_vec_sum = None
-																																																																																																																        # sum pooling with feature, FloatTensor, Size: 468
-																																																																																																																		        self.input_vec_sum_feature = None
-																																																																																																																				        # GRU, FloatTensor, Size: 6100
-																																																																																																																						        self.input_vec_hidden = None
-																																																																																																																								        # GRU with feature, FloatTensor, Size: 6168
-																																																																																																																										        self.input_vec_hidden_feature = None
-																																																																																																																												        # AttentionGRU, FloatTensor, Size: 1600
-																																																																																																																														        self.input_vec_attention = None
-																																																																																																																																        # AttentionGRU with feature, FloatTensor, Size: 1668
-																																																																																																																																		        self.input_vec_attention_feature = None
-																																																																																																																																				        # tag(1 for positive case, and 0 for negative case), Int, Size: 1
-																																																																																																																																						        self.antecedent_label = None
-																																																																																																																																								```
 
 ## Trigger Detection Results
 
 | Auxiliary  | ML | SVM | SVM+Feature |
 | :-------: | :----: | :-----: | :--: |
-| Do  | 0.89 | 0.90 |      |
-| Be  | 0.63 | 0.63 |      |
-| Have  | 0.75 | 0.61 |      |
-| Modal | 0.86 | 0.72 |      |
-| To | 0.79 | 0.44 |      |
-| So | 0.86 | 0.90 |      |
-| ALL | 0.82 | 0.81 |      |
+| Do  | 0.89 | **0.94** | 0.93 |
+| Be  | 0.63 | 0.71 | **0.76** |
+| Have  | 0.75 | 0.76 | **0.90** |
+| Modal | 0.86 | **0.95** | **0.95** |
+| To | 0.79 | 0.64 | **0.86** |
+| So | 0.86 | **0.91** | 0.90 |
+| ALL | 0.82 | 0.87 | **0.90** |
 
 **Table 1**: VPE detection results (baseline F1, Machine Learning F1, SVM F1, SVM with Auxiliary and Syntactic F1) obtained with 5-fold cross validation. (ML refers to the EMNLP 2016 paper of  Kenyon-Dean K et al.)
 
-| Test Set Results           |   P    |   R    |   F1   |
-| :------------------------- | :----: | :----: | :----: |
-| Liu et al.(2016)           | 0.8022 | 0.6135 | 0.6953 |
-| Kenyon-Dean K et al.(2016) | 0.7574 | 0.8655 | 0.8078 |
-| SVM                        | 0.8089 | 0.7983 | 0.7966 |
-| SVM+Feature                | 0.9541 | 0.9538 | 0.9538 |
+| Test Set Results           |     P      |     R      |     F1     |
+| :------------------------- | :--------: | :--------: | :--------: |
+| Liu et al.(2016)           |   0.8022   |   0.6135   |   0.6953   |
+| Kenyon-Dean K et al.(2016) |   0.7574   |   0.8655   |   0.8078   |
+| SVM                        |   0.8803   |   0.8782   |   0.8780   |
+| SVM+Feature                | **0.9048** | **0.9034** | **0.9033** |
 
 **Table 2**: Results (precision, recall, F1) for VPE detection using the train-test split proposed by Bus and Spenader(2011) 
 
@@ -228,5 +165,4 @@ class Sentence(object):
 | RNN-Encoder + Attention + MLP + Feature |        |        |        |
 
 **Table 4**: End-to-end results (precision, recall, F1) using the train-test split proposed by Bos and Spenader (2011). 
-
 
