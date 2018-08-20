@@ -331,6 +331,14 @@ class DataManager(object):
                 # _input_vector = torch.cat((sentence.antecedent_attention_tensor.float(), sentence.before_antecedent_attention_tensor.float()), 1)
                 _input_vector2 = torch.cat((sentence.after_antecedent_attention_tensor.float(), tri))
                 sentence.input_vec_attention_feature = torch.cat((_input_vector, _input_vector2))
+                # GRU hidden, Tensor, Size: sentences_length X 6000
+                sentence.before_antecedent_hidden_tensor = None
+                sentence.antecedent_hidden_tensor = None
+                sentence.after_antecedent_hidden_tensor = None
+                # attention
+                sentence.before_antecedent_attention_tensor = None
+                sentence.antecedent_attention_tensor = None
+                sentence.after_antecedent_attention_tensor = None
             print('finish processing sentences for antecedent')
             with open(_path_to_self_antecedent_generate_sentences, 'w') as f:
                 pickle.dump(self.antecedent_generate_sentences, f,protocol=pickle.HIGHEST_PROTOCOL)
