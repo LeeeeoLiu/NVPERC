@@ -1,6 +1,6 @@
 # End-to-end Neural Verb Phrase Ellipsis Resolution
 
-![image-20180816101109172](https://ws4.sinaimg.cn/large/006tNbRwly1fubbjl7u1hj31kw1a5dtk.jpg)
+![image-20180823134307677](https://ws2.sinaimg.cn/large/006tNbRwly1fujl0e7wqoj31kw10p13j.jpg)
 
 Table of Contents
 =================
@@ -14,9 +14,11 @@ Table of Contents
       * [Data Manager](#data-manager)
          * [Step 1 Pretrain Data Manager](#step-1-pretrain-data-manager)
          * [Step 2 Use Pretrained Data](#step-2-use-pretrained-data)
-      * [Sentence](#sentence)
-      * [Trigger Detection Results](#trigger-detection-results)
-      * [Antecedent Indentification Results](#antecedent-indentification-results)
+      * [Experiments](#experiments)
+         * [Trigger Detection Results (VPE Detection)](#trigger-detection-results-vpe-detection)
+         * [Antecedent Indentification Results (VPE Resolution)](#antecedent-indentification-results-vpe-resolution)
+
+Created by [gh-md-toc](https://github.com/ekalinin/github-markdown-toc)
 
 ## Requirements
 
@@ -111,9 +113,9 @@ if __name__ == '__main__':
         _sent.sen
 ```
 
-## Experiment Results
+## Experiments
 
-The experiment is consist of VPE Detection and VPE Resolution. 
+The experiments are consist of VPE Detection and VPE Resolution. 
 ### Trigger Detection Results (VPE Detection)
 
 **Please refer to `VPE_Detection.py`**
