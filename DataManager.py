@@ -57,7 +57,6 @@ class DataManager(object):
         self.process_data()
         self.process_data_4_antecedent()
 
-
     def load_tagged_data(self):
         _path_to_self_sentences = './datas/data_manager/self_sentences.pkl'
         if os.path.exists(_path_to_self_sentences) and self.overwrite == False:
@@ -239,164 +238,122 @@ class DataManager(object):
             _tmp_af_attention_tensor = torch.load(f)
 
         print 'loading tensor the sentence'
-        for idx, _sentence in enumerate(self.antecedent_generate_sentences):
+        _new_antecedent_sentence_list = []
+        for idx, sentence in enumerate(self.antecedent_generate_sentences):
+            print('loading vector: {}/{}'.format(idx, len(self.antecedent_generate_sentences)))
+            _sentence = copy.deepcopy(sentence)
             _sentence.before_antecedent_hidden_tensor = _tmp_be_hidden_tensor[idx]
             _sentence.antecedent_hidden_tensor = _tmp_at_hidden_tensor[idx]
             _sentence.after_antecedent_hidden_tensor = _tmp_af_hidden_tensor[idx]
             _sentence.before_antecedent_attention_tensor = _tmp_be_attention_tensor[idx]
             _sentence.antecedent_attention_tensor = _tmp_at_attention_tensor[idx]
             _sentence.after_antecedent_attention_tensor = _tmp_af_attention_tensor[idx]
+            _new_antecedent_sentence_list.append(_sentence)
+        self.antecedent_generate_sentences = _new_antecedent_sentence_list
+        del _new_antecedent_sentence_list
 
 
     def process_data_4_antecedent(self):
         _path_to_self_antecedent_generate_sentences = './datas/data_manager/self_antecedent_generate_sentences.pkl'
-        if os.path.exists(_path_to_self_antecedent_generate_sentences) and self.overwrite == False:
-            print('found preprocessed file')
-            print('load self.antecedent_generate_sentences from {}'.format(_path_to_self_antecedent_generate_sentences))
-            with open(_path_to_self_antecedent_generate_sentences, 'r') as f:
-                self.antecedent_generate_sentences = pickle.load(f)
-        else:
-            print('start processing sentences for antecedent')
-            print('split sentence into before_ant, antecedent, after_ant, tag_4_data, label_4_data')
-            for idx, sentence in enumerate(self.trigger_generate_sentences):
-                print('split {}/{}'.format(idx, len(self.trigger_generate_sentences)))
+        
+        print('start processing sentences for antecedent')
+        print('split sentence into before_ant, antecedent, after_ant, tag_4_data, label_4_data')
+        _new_antecedent_sentence_list = []        
+        for idx, sentence in enumerate(self.trigger_generate_sentences):
+            print('split {}/{}'.format(idx, len(self.trigger_generate_sentences)))
+            if sentence.trigger_label:
                 antecedent, before_ant, after_ant, tag_4_data, label_4_data = split_out_antecedent(
                     sentence.sen, sentence.sen_parse, sentence.truth_label, sentence.trigger_index)
-                current_sentence = copy.deepcopy(sentence)
                 _tmp_neg_sentence_list = []
                 for b, a, af, t, l in zip(before_ant, antecedent, after_ant, tag_4_data, label_4_data):
-                    current_sentence.words_before_antecedent = b if b else 'None'
-                    current_sentence.antecedent = a if a else 'None'
-                    current_sentence.words_after_antecedent = af if af else 'None'
-                    current_sentence.antecedent_label = t if t else 'None'
-                    current_sentence.sen_tag_label = l if l else 'None'
-                    if current_sentence.antecedent_label == 1:
-                        self.antecedent_generate_sentences.append(current_sentence)
+                    if '1' not in l and 1 not in l  and '3' not in l and 3 not in l:
+                        continue
                     else:
-                        _tmp_neg_sentence_list.append(current_sentence)
+                        current_sentence = copy.deepcopy(sentence)
+                        current_sentence.words_before_antecedent = b if len(b)>1 else 'None'
+                        current_sentence.antecedent = a if len(a)>1 else 'None'
+                        current_sentence.words_after_antecedent = af if len(af)>1 else 'None'
+                        # current_sentence.antecedent_label = t if t else 'None'
+                        current_sentence.antecedent_label = int(t)
+                        current_sentence.sen_tag_label = l if l else 'None'
+                        
+                        if current_sentence.antecedent_label == 1:
+                            _new_antecedent_sentence_list.append(current_sentence)
+                        else:
+                            _tmp_neg_sentence_list.append(current_sentence)
+            if len(_tmp_neg_sentence_list)>0:
                 random.shuffle(_tmp_neg_sentence_list)
-                self.antecedent_generate_sentences.append(_tmp_neg_sentence_list[0])
+                _new_antecedent_sentence_list.append(_tmp_neg_sentence_list[0])
 
-            print('get openNMT hidden and attention')
-            self.get_opennmt_tensor()
+        self.antecedent_generate_sentences = _new_antecedent_sentence_list
+        del _new_antecedent_sentence_list
+        print('get openNMT hidden and attention')
+        self.get_opennmt_tensor()
 
-            print('generate antecedent input vector')
-            for idx, sentence in enumerate(self.antecedent_generate_sentences):
-                print('generate vector: {}/{}'.format(idx,
-                                                    len(self.antecedent_generate_sentences)))
-                words = sentence.words_list
-                trigger_vec = self.fasttext_model[sentence.trigger]
+        _new_antecedent_sentence_list = []
+        print('generate antecedent input vector')
+        for idx, _sentence in enumerate(self.antecedent_generate_sentences):
+            print('generate vector: {}/{}'.format(idx, len(self.antecedent_generate_sentences)))
+            sentence = copy.deepcopy(_sentence)
+            words = sentence.words_list
+            trigger_vec = self.fasttext_model[sentence.trigger]
+            fvec = get_feature_vec(sentence.sen_parse, sentence.sen_tag_label, words)
+            tri_vec = trigger_vec + fvec
+            # tri_vec.append(trigger_vec + fvec)
 
-                fvec = get_feature_vec(sentence.sen_parse, sentence.sen_tag_label, words)
-                tri_vec = trigger_vec + fvec
-                # tri_vec.append(trigger_vec + fvec)
+            # self.input_vec_sum = None
+            trigger_vec_tensor = torch.from_numpy(np.array(trigger_vec)).float()
+            ba_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.words_before_antecedent)).float()
+            ant_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.antecedent)).float()
+            aa_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.words_after_antecedent)).float()
+            sentence.input_vec_sum = torch.cat((ant_sum_vec,ba_sum_vec,aa_sum_vec ,trigger_vec_tensor)).numpy().tolist()
 
-                # self.input_vec_sum = None
-                trigger_vec_tensor = torch.from_numpy(np.array(trigger_vec)).float()
-                ba_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.words_before_antecedent)).float()
-                ant_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.antecedent)).float()
-                aa_sum_vec = torch.from_numpy(get_sum_pooling_vec(sentence.words_after_antecedent)).float()
-                sentence.input_vec_sum = torch.cat((ant_sum_vec,ba_sum_vec,aa_sum_vec ,trigger_vec_tensor)).numpy().tolist()
+            # self.input_vec_sum_feature = None
+            sentence.input_vec_sum_feature = torch.cat(
+                (ant_sum_vec, ba_sum_vec, aa_sum_vec, trigger_vec_tensor, torch.from_numpy(np.array(fvec)).float())).numpy().tolist()
 
-                # self.input_vec_sum_feature = None
-                sentence.input_vec_sum_feature = torch.cat(
-                    (ant_sum_vec, ba_sum_vec, aa_sum_vec, trigger_vec_tensor, torch.from_numpy(np.array(fvec)).float())).numpy().tolist()
+            # self.input_vec_hidden = None
+            tri_vec = trigger_vec
+            tri = torch.from_numpy(np.array(tri_vec)).float()
+            
+            _input_vector = torch.cat((sentence.antecedent_hidden_tensor.float(), sentence.before_antecedent_hidden_tensor.float()))
+            _input_vector2 = torch.cat((sentence.after_antecedent_hidden_tensor.float(), tri))
+            sentence.input_vec_hidden = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
 
-                # self.input_vec_hidden = None
-                tri_vec = trigger_vec
-                tri = torch.from_numpy(np.array(tri_vec)).float()
-                _input_vector = torch.cat((sentence.antecedent_hidden_tensor.float(), sentence.before_antecedent_hidden_tensor.float()))
-                _input_vector2 = torch.cat((sentence.after_antecedent_hidden_tensor.float(), tri))
-                sentence.input_vec_hidden = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
+            # self.input_vec_hidden_feature = None
+            tri_vec = trigger_vec + fvec
+            tri = torch.from_numpy(np.array(tri_vec)).float()
+            # _input_vector = torch.cat((sentence.antecedent_hidden_tensor.float(), sentence.before_antecedent_hidden_tensor.float()), 1)
+            _input_vector2 = torch.cat((sentence.after_antecedent_hidden_tensor.float(), tri))
+            sentence.input_vec_hidden_feature = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
 
-                # self.input_vec_hidden_feature = None
-                tri_vec = trigger_vec + fvec
-                tri = torch.from_numpy(np.array(tri_vec)).float()
-                # _input_vector = torch.cat((sentence.antecedent_hidden_tensor.float(), sentence.before_antecedent_hidden_tensor.float()), 1)
-                _input_vector2 = torch.cat((sentence.after_antecedent_hidden_tensor.float(), tri))
-                sentence.input_vec_hidden_feature = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
+            # self.input_vec_attention = None
+            tri_vec = trigger_vec
+            tri = torch.from_numpy(np.array(tri_vec)).float()
+            _input_vector = torch.cat((sentence.antecedent_attention_tensor.float(), sentence.before_antecedent_attention_tensor.float()))
+            _input_vector2 = torch.cat((sentence.after_antecedent_attention_tensor.float(), tri))
+            sentence.input_vec_attention = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
+            
+            # self.input_vec_attention_feature = None
+            tri_vec = trigger_vec + fvec
+            tri = torch.from_numpy(np.array(tri_vec)).float()
+            # _input_vector = torch.cat((sentence.antecedent_attention_tensor.float(), sentence.before_antecedent_attention_tensor.float()), 1)
+            _input_vector2 = torch.cat((sentence.after_antecedent_attention_tensor.float(), tri))
+            sentence.input_vec_attention_feature = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
+            # GRU hidden, Tensor, Size: sentences_length X 6000
+            del sentence.before_antecedent_hidden_tensor
+            del sentence.antecedent_hidden_tensor
+            del sentence.after_antecedent_hidden_tensor
+            # attention
+            del sentence.before_antecedent_attention_tensor
+            del sentence.antecedent_attention_tensor
+            del sentence.after_antecedent_attention_tensor
+            _new_antecedent_sentence_list.append(sentence)
+        self.antecedent_generate_sentences = _new_antecedent_sentence_list
+        del _new_antecedent_sentence_list
 
-                # self.input_vec_attention = None
-                tri_vec = trigger_vec
-                tri = torch.from_numpy(np.array(tri_vec)).float()
-                _input_vector = torch.cat((sentence.antecedent_attention_tensor.float(), sentence.before_antecedent_attention_tensor.float()))
-                _input_vector2 = torch.cat((sentence.after_antecedent_attention_tensor.float(), tri))
-                sentence.input_vec_attention = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
-                
-                # self.input_vec_attention_feature = None
-                tri_vec = trigger_vec + fvec
-                tri = torch.from_numpy(np.array(tri_vec)).float()
-                # _input_vector = torch.cat((sentence.antecedent_attention_tensor.float(), sentence.before_antecedent_attention_tensor.float()), 1)
-                _input_vector2 = torch.cat((sentence.after_antecedent_attention_tensor.float(), tri))
-                sentence.input_vec_attention_feature = torch.cat((_input_vector, _input_vector2)).numpy().tolist()
-                # GRU hidden, Tensor, Size: sentences_length X 6000
-                sentence.before_antecedent_hidden_tensor = None
-                sentence.antecedent_hidden_tensor = None
-                sentence.after_antecedent_hidden_tensor = None
-                # attention
-                sentence.before_antecedent_attention_tensor = None
-                sentence.antecedent_attention_tensor = None
-                sentence.after_antecedent_attention_tensor = None
-            print('finish processing sentences for antecedent')
-            with open(_path_to_self_antecedent_generate_sentences, 'w') as f:
-                pickle.dump(self.antecedent_generate_sentences, f,protocol=pickle.HIGHEST_PROTOCOL)
-
-    def prepare_data_4_trigger(self):
-        """ 
-        """
-        if self.train_test:
-            train_data_pos = [_sentence for _sentence in  self.trigger_generate_sentences if _sentence.file_name in self.train_files and _sentence.trigger_label == 1]
-            train_data_neg = [_sentence for _sentence in  self.trigger_generate_sentences if _sentence.file_name in self.train_files and _sentence.trigger_label == 0]
-            random.shuffle(train_data_neg)
-            train_data = train_data_pos + train_data_neg[:len(train_data_pos)]
-            random.shuffle(train_data)
-            test_data = [_sentence for _sentence in self.trigger_generate_sentences if _sentence.file_name in self.test_files and _sentence.trigger_label == 1]
-            random.shuffle(test_data)
-            root_path_to_save_data = './datas/trigger_datas/train-test_data/'
-            with open('{}train.pkl'.format(root_path_to_save_data), 'w') as f:
-                pickle.dump(train_data, f, protocol=pickle.HIGHEST_PROTOCOL)
-            with open('{}test.pkl'.format(root_path_to_save_data), 'w') as f:
-                pickle.dump(test_data, f, protocol=pickle.HIGHEST_PROTOCOL)
-        else:
-            pos_data = [_sentence for _sentence in  self.trigger_generate_sentences if _sentence.trigger_label == 1]
-            neg_data = [_sentence for _sentence in  self.trigger_generate_sentences if _sentence.trigger_label == 0]
-            assert len(pos_data) != 0
-            _pos_cross_valid_all = get_valid_data(pos_data)
-            _neg_cross_valid_all = get_valid_data(neg_data)
-            for i in range(5):
-                [_pos_4_train, _pos_4_test] = _pos_cross_valid_all[i]
-                [_neg_4_train, _neg_4_test] = _neg_cross_valid_all[i]
-                _neg_4_train = random.sample(_neg_4_train, len(_pos_4_train))
-                test_data = _pos_4_test + _neg_4_test[:len(_pos_4_test)]
-                train_data = _pos_4_train + _neg_4_train
-                print '---------------------------------'
-                print 'cross_validation id:' + str(i)
-                print 'pos for training:' + len(_pos_4_train).__str__()
-                print 'neg for training:' + len(_neg_4_train).__str__()
-                print 'pos for testing:' + len(_pos_4_test).__str__()
-                print 'neg for testing:' + len(_neg_4_test[:len(_pos_4_test)]).__str__()
-                print '---------------------------------'
-                root_path_to_save_data = './datas/trigger_datas/5-cross_data/'
-                with open('{}train_{}.pkl'.format(root_path_to_save_data,i), 'w') as f:
-                    pickle.dump(train_data, f, protocol=pickle.HIGHEST_PROTOCOL)
-                with open('{}test_{}.pkl'.format(root_path_to_save_data,i), 'w') as f:
-                    pickle.dump(test_data, f, protocol=pickle.HIGHEST_PROTOCOL)
-
-
-    def prepare_data_4_antecedent(self):
-        """ Need to save sens, sens_parse, sens_tigger_idx and sens_truth_label. """
-        if self.train_test:
-            # Use wsj_section00-19 for training and wsj_section20-24 for testing.
-            pass
-        else:
-            # Use all data training with 5 cross validation.
-            pass
-        pass
-
-    def evaluate_trigger(self):
-        pass
-
-    def evaluate_antecedent(self):
-        pass
+        print('finish processing sentences for antecedent')
+        with open(_path_to_self_antecedent_generate_sentences, 'w') as f:
+            pickle.dump(self.antecedent_generate_sentences, f,protocol=pickle.HIGHEST_PROTOCOL)
 
 

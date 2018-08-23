@@ -1357,8 +1357,6 @@ def get_feature_vec(sen_parse, tag, words):
     tree = Tree.fromstring(sen_parse)
     # tree.pretty_print()
 
-    
-
     ante_tags = [1 if (int(i) == 1 or int(i) == 3) else 0 for i in tag]
     trig_tags = [1 if (int(i) == 2 or int(i) == 3) else 0 for i in tag]
     i = 0
@@ -1458,9 +1456,7 @@ def split_out_antecedent(sen, sen_parse, truth_label, trigger_idx):
     parser_tree = sen_parse
     sent_label = truth_label
     trigger = trigger_idx
-
-    # print words[sent_label]
-
+    
     g_ant = ''  # gold
     b_ant = ''  # before
     a_ant = ''  # after

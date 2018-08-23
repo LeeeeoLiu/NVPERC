@@ -111,12 +111,26 @@ if __name__ == '__main__':
         _sent.sen
 ```
 
-## Sentence
+## Experiment Results
 
-Besides, you can get more info in a sentence object. The defination of the Sentence Class is as follows.
+The experiment is consist of VPE Detection and VPE Resolution. 
+### Trigger Detection Results (VPE Detection)
+
+**Please refer to `VPE_Detection.py`**
+
+```bash
+usage: VPE_Detection_SVM.py [-h] [-train_test TRAIN_TEST] [-aux AUX]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -train_test TRAIN_TEST
+                        Type:bool. Whether use train-test proposed by Bos for
+                        training. Defalut:False
+  -aux AUX              Type:bool. Whether show classification report for each
+                        Auxiliary. Defalut:False
+```
 
 
-## Trigger Detection Results
 
 | Auxiliary  | ML | SVM | SVM+Feature |
 | :-------: | :----: | :-----: | :--: |
@@ -139,17 +153,38 @@ Besides, you can get more info in a sentence object. The defination of the Sente
 
 **Table 2**: Results (precision, recall, F1) for VPE detection using the train-test split proposed by Bus and Spenader(2011) 
 
-## Antecedent Indentification Results
+### Antecedent Indentification Results (VPE Resolution)
+**Please refer to `VPE_Resolution.py`**
+```bash
+usage: VPE_Resolution_MLP.py [-h] [-train_test TRAIN_TEST] [-aux AUX]
+                             [-gpu GPU] [-model MODEL]
 
-| Auxiliary | Baseline | MIRA |  SUM MLP    |   SUM MLP Feature   |  RNN MLP    | RNN MLP Feature     |  RNN Attention MLP    | RNN Attention MLP Feature     |
+optional arguments:
+  -h, --help            show this help message and exit
+  -gpu GPU              Use GPU Id Defalut:-1
+  -model MODEL          Choose Model Defalut:0(SUM)
+```
+
+And the model list is as follows:
+- 0, SUM Pooling + MLP
+- 1, SUM Pooling + MLP + Feature
+- 2, GRU + MLP
+- 3, GRU + MLP + Feature
+- 4, GRU + Attention + MLP
+- 5, GRU + Attention + MLP + Feature
+
+For example, `python VPE_Resolution_MLP.py -gpu 1 -model 5`.
+
+
+| Auxiliary | Baseline | MIRA |  SUM MLP    |   SUM MLP Feature   |  GRU MLP  | GRU MLP Feature  |  GRU Attention MLP  | GRU Attention MLP Feature  |
 | :-----------: | :----------: | :------: | :--: | :--: | :--: | :--: | :--: | :--: |
-| do | 0.42 | 0.71 |      |      |      |      |      |      |
-| be | 0.37 | 0.63 |      |      |      |      |      |      |
-| modal | 0.42 | 0.67 |      |      |      |      |      |      |
-| so | 0.15 | 0.53 |      |      |      |      |      |      |
-| have | 0.39 | 0.61 |      |      |      |      |      |      |
-| to | 0.03 | 0.58 |      |      |      |      |      |      |
-| ALL | 0.36 | 0.65 |      |      |      |      |      |      |
+| do | 0.42 | 0.71 | 0.84 | 0.91 | 0.81 | 0.90 | 0.86 | **0.93** |
+| be | 0.37 | 0.63 | 0.86 | 0.89 | 0.78 | 0.84 | 0.85 | **0.96** |
+| modal | 0.42 | 0.67 | 0.86 | 0.90 | 0.84 | 0.89 | 0.78 | **0.94** |
+| so | 0.15 | 0.53 | 0.81 | 0.88 | 0.79 | 0.79 | 0.85 | **0.90** |
+| have | 0.39 | 0.61 | 0.79 | 0.79 | 0.76 | 0.87 | 0.76 | **0.89** |
+| to | 0.03 | 0.58 | 0.84 | **0.97** | 0.87 | 0.78 | 0.87 | 0.93 |
+| ALL | 0.36 | 0.65 | 0.80 | 0.90 | 0.80 | 0.86 | 0.83 | **0.93** |
 
 **Table 3**: Results（baseline accuracy, MIRA accuracy, Sum-Pooling MLP accuracy, Sum-Pooling MLP with Feature accuracy, RNN-Encoder MLP accuracy, RNN-Encoder MLP with Feature accuracy, RNN-Attention-Encoder MLP accuracy, RNN-Attention-Encoder MLP with Feature accuracy）for antecedent identification; obtained with 5-fold cross validation. 
 
