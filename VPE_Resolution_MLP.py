@@ -119,12 +119,9 @@ if __name__ == '__main__':
     start_time = datetime.now()
     
     parser = argparse.ArgumentParser()
-    parser.add_argument('-train_test', type=bool, default=False, help="Type:bool. Whether use train-test proposed by Bos for training. \nDefalut:False")
-    parser.add_argument('-aux', type=bool, default=False, help="Type:bool. Whether show classification report for each Auxiliary. \nDefalut:False")
     parser.add_argument('-gpu', type=int, default=-1, help="Use GPU Id \nDefalut:-1")
     parser.add_argument('-model', type=int, default=0, help="Choose Model \nDefalut:0(SUM)")
     
-
     args = parser.parse_args()
     ROOT_DATA_PATH = './datas/data_manager/'
     # parameters of logging

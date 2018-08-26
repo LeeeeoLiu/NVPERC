@@ -81,7 +81,9 @@ class DataManager(object):
     def process_data(self):
         """ get sentence info """
         
-        _path_to_self_trigger_generate_sentences = './datas/data_manager/self_trigger_generate_sentences.pkl'
+        # _path_to_self_trigger_generate_sentences = './datas/data_manager/self_trigger_generate_sentences.pkl'
+        _path_to_self_trigger_generate_sentences = './datas/data_manager/ete_trigger_generate_sentences.pkl'
+        
         if os.path.exists(_path_to_self_trigger_generate_sentences) and self.overwrite == False:
             print('found preprocessed file')
             print('load self.trigger_generate_sentences from {}'.format(_path_to_self_trigger_generate_sentences))
@@ -253,8 +255,11 @@ class DataManager(object):
         del _new_antecedent_sentence_list
 
 
+
+
     def process_data_4_antecedent(self):
-        _path_to_self_antecedent_generate_sentences = './datas/data_manager/self_antecedent_generate_sentences.pkl'
+        # _path_to_self_antecedent_generate_sentences = './datas/data_manager/self_antecedent_generate_sentences.pkl'
+        _path_to_self_antecedent_generate_sentences = './datas/data_manager/ete_antecedent_generate_sentences.pkl'
         
         print('start processing sentences for antecedent')
         print('split sentence into before_ant, antecedent, after_ant, tag_4_data, label_4_data')
