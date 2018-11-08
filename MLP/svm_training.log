@@ -1,0 +1,677 @@
+### For Each Aux
+---------------------------------
+cross_validation id:0
+pos for training:440
+neg for training:442
+pos for testing:111
+neg for testing:111
+---------------------------------
+================================
+test svm
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.8182    0.6429    0.7200        14
+          1     0.8276    0.9231    0.8727        26
+
+avg / total     0.8243    0.8250    0.8193        40
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.4000    0.6667    0.5000         3
+          1     0.9762    0.9318    0.9535        44
+
+avg / total     0.9394    0.9149    0.9245        47
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     0.8750    0.5000    0.6364        14
+          1     0.1250    0.5000    0.2000         2
+
+avg / total     0.7812    0.5000    0.5818        16
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     1.0000    0.3333    0.5000         3
+          1     0.8462    1.0000    0.9167        11
+
+avg / total     0.8791    0.8571    0.8274        14
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9865    0.9733    0.9799        75
+          1     0.8824    0.9375    0.9091        16
+
+avg / total     0.9682    0.9670    0.9674        91
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     1.0000    1.0000    1.0000         2
+          1     1.0000    1.0000    1.0000        12
+
+avg / total     1.0000    1.0000    1.0000        14
+
+================================
+test svm with feature
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.6000    0.8571    0.7059        14
+          1     0.9000    0.6923    0.7826        26
+
+avg / total     0.7950    0.7500    0.7558        40
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.3333    0.3333    0.3333         3
+          1     0.9545    0.9545    0.9545        44
+
+avg / total     0.9149    0.9149    0.9149        47
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     1.0000    1.0000    1.0000        14
+          1     1.0000    1.0000    1.0000         2
+
+avg / total     1.0000    1.0000    1.0000        16
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     0.6000    1.0000    0.7500         3
+          1     1.0000    0.8182    0.9000        11
+
+avg / total     0.9143    0.8571    0.8679        14
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9867    0.9867    0.9867        75
+          1     0.9375    0.9375    0.9375        16
+
+avg / total     0.9780    0.9780    0.9780        91
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     1.0000    1.0000    1.0000         2
+          1     1.0000    1.0000    1.0000        12
+
+avg / total     1.0000    1.0000    1.0000        14
+
+---------------------------------
+cross_validation id:1
+pos for training:441
+neg for training:442
+pos for testing:110
+neg for testing:111
+---------------------------------
+================================
+test svm
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.7500    0.5000    0.6000        18
+          1     0.6786    0.8636    0.7600        22
+
+avg / total     0.7107    0.7000    0.6880        40
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.5000    1.0000    0.6667         2
+          1     1.0000    0.9487    0.9737        39
+
+avg / total     0.9756    0.9512    0.9587        41
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     0.8462    0.7857    0.8148        14
+          1     0.6250    0.7143    0.6667         7
+
+avg / total     0.7724    0.7619    0.7654        21
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     1.0000    0.6667    0.8000         3
+          1     0.8889    1.0000    0.9412         8
+
+avg / total     0.9192    0.9091    0.9027        11
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9706    0.9851    0.9778        67
+          1     0.9545    0.9130    0.9333        23
+
+avg / total     0.9665    0.9667    0.9664        90
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.7000    1.0000    0.8235         7
+          1     1.0000    0.7273    0.8421        11
+
+avg / total     0.8833    0.8333    0.8349        18
+
+================================
+test svm with feature
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.7059    0.6667    0.6857        18
+          1     0.7391    0.7727    0.7556        22
+
+avg / total     0.7242    0.7250    0.7241        40
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.0000    0.0000    0.0000         2
+          1     0.9512    1.0000    0.9750        39
+
+avg / total     0.9048    0.9512    0.9274        41
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     0.9333    1.0000    0.9655        14
+          1     1.0000    0.8571    0.9231         7
+
+avg / total     0.9556    0.9524    0.9514        21
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     1.0000    1.0000    1.0000         3
+          1     1.0000    1.0000    1.0000         8
+
+avg / total     1.0000    1.0000    1.0000        11
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9437    1.0000    0.9710        67
+          1     1.0000    0.8261    0.9048        23
+
+avg / total     0.9581    0.9556    0.9541        90
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.8750    1.0000    0.9333         7
+          1     1.0000    0.9091    0.9524        11
+
+avg / total     0.9514    0.9444    0.9450        18
+
+---------------------------------
+cross_validation id:2
+pos for training:441
+neg for training:442
+pos for testing:110
+neg for testing:111
+---------------------------------
+================================
+test svm
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.8462    0.5000    0.6286        22
+          1     0.6207    0.9000    0.7347        20
+
+avg / total     0.7388    0.6905    0.6791        42
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.4000    0.6667    0.5000         3
+          1     0.9750    0.9286    0.9512        42
+
+avg / total     0.9367    0.9111    0.9211        45
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     0.4286    0.4286    0.4286         7
+          1     0.5000    0.5000    0.5000         8
+
+avg / total     0.4667    0.4667    0.4667        15
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     0.0000    0.0000    0.0000         3
+          1     0.7273    0.8000    0.7619        10
+
+avg / total     0.5594    0.6154    0.5861        13
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9861    0.9467    0.9660        75
+          1     0.8182    0.9474    0.8780        19
+
+avg / total     0.9522    0.9468    0.9482        94
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.3333    1.0000    0.5000         1
+          1     1.0000    0.8182    0.9000        11
+
+avg / total     0.9444    0.8333    0.8667        12
+
+================================
+test svm with feature
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.8261    0.8636    0.8444        22
+          1     0.8421    0.8000    0.8205        20
+
+avg / total     0.8337    0.8333    0.8330        42
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.5000    0.6667    0.5714         3
+          1     0.9756    0.9524    0.9639        42
+
+avg / total     0.9439    0.9333    0.9377        45
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     0.6250    0.7143    0.6667         7
+          1     0.7143    0.6250    0.6667         8
+
+avg / total     0.6726    0.6667    0.6667        15
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     1.0000    0.6667    0.8000         3
+          1     0.9091    1.0000    0.9524        10
+
+avg / total     0.9301    0.9231    0.9172        13
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9259    1.0000    0.9615        75
+          1     1.0000    0.6842    0.8125        19
+
+avg / total     0.9409    0.9362    0.9314        94
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.2000    1.0000    0.3333         1
+          1     1.0000    0.6364    0.7778        11
+
+avg / total     0.9333    0.6667    0.7407        12
+
+---------------------------------
+cross_validation id:3
+pos for training:441
+neg for training:443
+pos for testing:110
+neg for testing:110
+---------------------------------
+================================
+test svm
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.5500    0.7333    0.6286        15
+          1     0.8095    0.6538    0.7234        26
+
+avg / total     0.7146    0.6829    0.6887        41
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.5000    0.5000    0.5000         2
+          1     0.9714    0.9714    0.9714        35
+
+avg / total     0.9459    0.9459    0.9459        37
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     0.8000    0.5000    0.6154         8
+          1     0.5000    0.8000    0.6154         5
+
+avg / total     0.6846    0.6154    0.6154        13
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     0.6000    1.0000    0.7500         3
+          1     1.0000    0.6667    0.8000         6
+
+avg / total     0.8667    0.7778    0.7833         9
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9740    0.9615    0.9677        78
+          1     0.8500    0.8947    0.8718        19
+
+avg / total     0.9497    0.9485    0.9489        97
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.8000    1.0000    0.8889         4
+          1     1.0000    0.9474    0.9730        19
+
+avg / total     0.9652    0.9565    0.9583        23
+
+================================
+test svm with feature
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.6316    0.8000    0.7059        15
+          1     0.8636    0.7308    0.7917        26
+
+avg / total     0.7787    0.7561    0.7603        41
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     1.0000    0.5000    0.6667         2
+          1     0.9722    1.0000    0.9859        35
+
+avg / total     0.9737    0.9730    0.9687        37
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     1.0000    0.7500    0.8571         8
+          1     0.7143    1.0000    0.8333         5
+
+avg / total     0.8901    0.8462    0.8480        13
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     0.7500    1.0000    0.8571         3
+          1     1.0000    0.8333    0.9091         6
+
+avg / total     0.9167    0.8889    0.8918         9
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9398    1.0000    0.9689        78
+          1     1.0000    0.7368    0.8485        19
+
+avg / total     0.9516    0.9485    0.9453        97
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.8000    1.0000    0.8889         4
+          1     1.0000    0.9474    0.9730        19
+
+avg / total     0.9652    0.9565    0.9583        23
+
+---------------------------------
+cross_validation id:4
+pos for training:441
+neg for training:443
+pos for testing:110
+neg for testing:110
+---------------------------------
+================================
+test svm
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.8182    0.5294    0.6429        17
+          1     0.6000    0.8571    0.7059        14
+
+avg / total     0.7196    0.6774    0.6713        31
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.4286    1.0000    0.6000         3
+          1     1.0000    0.9245    0.9608        53
+
+avg / total     0.9694    0.9286    0.9415        56
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     1.0000    0.6000    0.7500        10
+          1     0.6364    1.0000    0.7778         7
+
+avg / total     0.8503    0.7647    0.7614        17
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     0.5714    0.8000    0.6667         5
+          1     0.8333    0.6250    0.7143         8
+
+avg / total     0.7326    0.6923    0.6960        13
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9459    0.9589    0.9524        73
+          1     0.7500    0.6923    0.7200        13
+
+avg / total     0.9163    0.9186    0.9173        86
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.5000    1.0000    0.6667         2
+          1     1.0000    0.8667    0.9286        15
+
+avg / total     0.9412    0.8824    0.8978        17
+
+================================
+test svm with feature
+Auxiliary:be
+             precision    recall  f1-score   support
+
+          0     0.7368    0.8235    0.7778        17
+          1     0.7500    0.6429    0.6923        14
+
+avg / total     0.7428    0.7419    0.7392        31
+
+Auxiliary:do
+             precision    recall  f1-score   support
+
+          0     0.2222    0.6667    0.3333         3
+          1     0.9787    0.8679    0.9200        53
+
+avg / total     0.9382    0.8571    0.8886        56
+
+Auxiliary:to
+             precision    recall  f1-score   support
+
+          0     0.8182    0.9000    0.8571        10
+          1     0.8333    0.7143    0.7692         7
+
+avg / total     0.8244    0.8235    0.8209        17
+
+Auxiliary:have
+             precision    recall  f1-score   support
+
+          0     0.7143    1.0000    0.8333         5
+          1     1.0000    0.7500    0.8571         8
+
+avg / total     0.8901    0.8462    0.8480        13
+
+Auxiliary:modal
+             precision    recall  f1-score   support
+
+          0     0.9481    1.0000    0.9733        73
+          1     1.0000    0.6923    0.8182        13
+
+avg / total     0.9559    0.9535    0.9499        86
+
+Auxiliary:so
+             precision    recall  f1-score   support
+
+          0     0.4000    1.0000    0.5714         2
+          1     1.0000    0.8000    0.8889        15
+
+avg / total     0.9294    0.8235    0.8515        17
+
+
+
+### For All
+
+---------------------------------
+cross_validation id:0
+pos for training:440
+neg for training:442
+pos for testing:111
+neg for testing:111
+---------------------------------
+svm:
+             precision    recall  f1-score   support
+
+          0     0.9307    0.8468    0.8868       111
+          1     0.8595    0.9369    0.8966       111
+
+avg / total     0.8951    0.8919    0.8917       222
+
+svm with feature:
+             precision    recall  f1-score   support
+
+          0     0.8908    0.9550    0.9217       111
+          1     0.9515    0.8829    0.9159       111
+
+avg / total     0.9211    0.9189    0.9188       222
+
+---------------------------------
+cross_validation id:1
+pos for training:441
+neg for training:442
+pos for testing:110
+neg for testing:111
+---------------------------------
+svm:
+             precision    recall  f1-score   support
+
+          0     0.8899    0.8739    0.8818       111
+          1     0.8750    0.8909    0.8829       110
+
+avg / total     0.8825    0.8824    0.8823       221
+
+svm with feature:
+             precision    recall  f1-score   support
+
+          0     0.9035    0.9279    0.9156       111
+          1     0.9252    0.9000    0.9124       110
+
+avg / total     0.9143    0.9140    0.9140       221
+
+---------------------------------
+cross_validation id:2
+pos for training:441
+neg for training:442
+pos for testing:110
+neg for testing:111
+---------------------------------
+svm:
+             precision    recall  f1-score   support
+
+          0     0.8627    0.7928    0.8263       111
+          1     0.8067    0.8727    0.8384       110
+
+avg / total     0.8349    0.8326    0.8323       221
+
+svm with feature:
+             precision    recall  f1-score   support
+
+          0     0.8455    0.9369    0.8889       111
+          1     0.9286    0.8273    0.8750       110
+
+avg / total     0.8869    0.8824    0.8820       221
+
+---------------------------------
+cross_validation id:3
+pos for training:441
+neg for training:443
+pos for testing:110
+neg for testing:110
+---------------------------------
+svm:
+             precision    recall  f1-score   support
+
+          0     0.8596    0.8909    0.8750       110
+          1     0.8868    0.8545    0.8704       110
+
+avg / total     0.8732    0.8727    0.8727       220
+
+svm with feature:
+             precision    recall  f1-score   support
+
+          0     0.8814    0.9455    0.9123       110
+          1     0.9412    0.8727    0.9057       110
+
+avg / total     0.9113    0.9091    0.9090       220
+
+---------------------------------
+cross_validation id:4
+pos for training:441
+neg for training:443
+pos for testing:110
+neg for testing:110
+---------------------------------
+svm:
+             precision    recall  f1-score   support
+
+          0     0.8624    0.8545    0.8584       110
+          1     0.8559    0.8636    0.8597       110
+
+avg / total     0.8591    0.8591    0.8591       220
+
+svm with feature:
+             precision    recall  f1-score   support
+
+          0     0.8203    0.9545    0.8824       110
+          1     0.9457    0.7909    0.8614       110
+
+avg / total     0.8830    0.8727    0.8719       220
+
+
+---------------------------------
+data for training:866
+data for testing:238
+---------------------------------
+save model to models/
+svm:
+             precision    recall  f1-score   support
+
+          0     0.9091    0.8403    0.8734       119
+          1     0.8516    0.9160    0.8826       119
+
+avg / total     0.8803    0.8782    0.8780       238
+
+svm with feature:
+             precision    recall  f1-score   support
+
+          0     0.8810    0.9328    0.9061       119
+          1     0.9286    0.8739    0.9004       119
+
+avg / total     0.9048    0.9034    0.9033       238
+
