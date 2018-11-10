@@ -4,9 +4,14 @@
 
 #### You can create an environment of anaconda
 
-Step 1: download and install Anaconda 
+Step 1: 
+  
+  download and install Anaconda 
   https://www.anaconda.com/download/#linux
-  for more install details: https://blog.csdn.net/Davidddl/article/details/81873606
+  
+  for more install details: 
+  https://blog.csdn.net/Davidddl/article/details/81873606
+  
 ```
 sudo bash Anaconda3-5.2.0-Linux-x86_64.sh
 
