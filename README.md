@@ -17,7 +17,7 @@ The codes are consist of two parts:
 
 The data is too large to upload to Github. You can download from the following two ways :
 
-- Google Drive.
+- Google Drive: https://drive.google.com/drive/folders/1DMUkklYA0zY-uXfJEOkFCNMfIAke4m-w?usp=sharing 
 
 - Baidu Cloud Disk: https://pan.baidu.com/s/1AQefeMv9UfPVO_AU7NGx0Q 
   - Extraction Code: jpgv 
