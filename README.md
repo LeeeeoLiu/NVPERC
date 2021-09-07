@@ -26,6 +26,15 @@ You can also use the ```MLP/prepare_data.py``` to generate the training data.
 
 # Citation
 
-If our code is helpful for your research, please cite us. (The bibtex is coming soon.)
-
-
+If our code is helpful for your research, please cite us.
+```
+@inproceedings{zhang2019neural,
+  title={A neural network approach to verb phrase ellipsis resolution},
+  author={Zhang, Wei-Nan and Zhang, Yue and Liu, Yuanxing and Di, Donglin and Liu, Ting},
+  booktitle={Proceedings of the AAAI Conference on Artificial Intelligence},
+  volume={33},
+  number={01},
+  pages={7468--7475},
+  year={2019}
+}
+```
